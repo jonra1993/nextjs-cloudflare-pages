@@ -1,29 +1,22 @@
 {
+  "name": "my-app",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next",
+    "dev": "next dev",
     "build": "next build",
-    "build-export": "next build && next export -o build/",
-    "preexport": "npm run build",
-    "export": "next export",
-    "prestart": "npm run export",
     "start": "next start",
-    "start-export": "serve build",
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "latest",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "serve": "^14.0.1"
-  },
-  "devDependencies": {
-    "@cloudflare/next-on-pages": "^0.10.1",
-    "@types/node": "^18.0.0",
-    "@types/react": "^18.0.14",
-    "@types/react-dom": "^18.0.5",
-    "eslint": "8.19.0",
-    "eslint-config-next": "12.2.0",
-    "typescript": "^4.7.4"
+    "@types/node": "20.2.1",
+    "@types/react": "18.2.6",
+    "@types/react-dom": "18.2.4",
+    "eslint": "8.40.0",
+    "eslint-config-next": "13.4.2",
+    "next": "13.4.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "5.0.4"
   }
 }
