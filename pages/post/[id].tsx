@@ -2,11 +2,24 @@ import Head from 'next/head'
 import Link from 'next/link'
 import axios from 'axios';
 import { useRouter } from 'next/router'
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { GetPost } from '../../lib/postdata_api'
 import { PostData } from '../../types/postdata'
+import { useInView } from 'react-intersection-observer';
+import xss from 'xss';
+import _ from 'lodash';
+import { ParseContent } from "../../lib/parse-content";
 
-export const runtime = 'experimental-edge'; // 'nodejs' (default) | 'edge'
+//export const runtime = 'experimental-edge'; // 'nodejs' (default) | 'edge'
+
+export function sanitizeContent(htmlContent: string) {
+  //const sanitizedHtml = DOMPurify(new JSDOM('<!DOCTYPE html>').window).sanitize(htmlContent);
+  return xss(htmlContent);
+}
+
+const createMarkup = (encodedHtml: string) => ({
+  __html: _.unescape(encodedHtml),
+});
 
 interface IPost {
   data: any
@@ -16,6 +29,7 @@ const Post: FC<IPost> = (props) => {
   const { data } = props
   const [postData, setPostData] = useState<null | PostData>(null)
   const router = useRouter()
+  const { ref, inView } = useInView({ triggerOnce: true });
   const id = router.query.id as string
 
   useEffect(() => {
@@ -33,17 +47,20 @@ const Post: FC<IPost> = (props) => {
 
       <h1>{postData.title}</h1>
 
-      <p>{postData.body}</p>
-      
-      <iframe 
-      srcDoc={data}       
-      width="100%"
-      height="600"
-      frameBorder="0"
-      title="Embedded Content"
-      //sandbox="allow-same-origin"
-      ></iframe>
+      <div ref={ref}>
+        {inView && (
+          <iframe
+            srcDoc={data}
+            width="100%"
+            height="600"
+            frameBorder="0"
+            title="Embedded Content"
+            sandbox="allow-same-origin allow-scripts"
+          ></iframe>
+        )}
+      </div>
 
+      <p>{postData.body}</p>
       <Link href="/">
         Go back to home
       </Link>
@@ -57,8 +74,7 @@ export async function getServerSideProps() {
     const response = await fetch(
       `http://localhost/dynamic`
     )
-    const data: string = (await response.text()) as string
-
+    let data: string = (await response.text()) as string
 
     return {
       props: {
