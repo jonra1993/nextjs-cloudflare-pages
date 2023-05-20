@@ -6,6 +6,7 @@ import { FC, useEffect, useState } from 'react'
 import { GetPost } from '../../lib/postdata_api'
 import { PostData } from '../../types/postdata'
 
+export const runtime = 'experimental-edge'; // 'nodejs' (default) | 'edge'
 
 interface IPost {
   data: any
@@ -52,8 +53,12 @@ const Post: FC<IPost> = (props) => {
 
 export async function getServerSideProps() {
   try {
-    const response = await axios.get('http://localhost/dynamic');
-    const data = response.data;
+    //const response2s = await axios.get('http://localhost/dynamic');
+    const response = await fetch(
+      `http://localhost/dynamic`
+    )
+    const data: string = (await response.text()) as string
+
 
     return {
       props: {
