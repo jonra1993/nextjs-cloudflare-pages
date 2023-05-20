@@ -22,7 +22,7 @@ const Post: FC<IPost> = (props) => {
     GetPost(id).then(r => setPostData(r))
   }, [router.isReady, id])
 
-  if (!postData) return <>'Loading...'</>
+  if (!postData) return <>Loading...</>
 
   return (
     <main >
