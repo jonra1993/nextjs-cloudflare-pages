@@ -2,31 +2,18 @@ import Head from 'next/head'
 import Link from 'next/link'
 import axios from 'axios';
 import { useRouter } from 'next/router'
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { GetPost } from '../../lib/postdata_api'
 import { PostData } from '../../types/postdata'
-import { serialize } from 'next-mdx-remote/serialize'
-import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
-import Test from '../../components/test'
-import Chart from '../../components/chart'
-import LineChartComponent from '../../components/line'
-import { GetServerSideProps } from 'next'
-import dynamic from 'next/dynamic'
-const components = { Test, Chart, LineChartComponent }
-const Plotly = dynamic(() => import("react-plotly.js").then((module) => module.default), {
-  ssr: false,
-  loading: () => <>Loading...</>,
-});
 
 
 interface IPost {
-  source: any
+  data: any
 }
 
 const Post: FC<IPost> = (props) => {
   const { data } = props
   const [postData, setPostData] = useState<null | PostData>(null)
-  const mdxSource = useRef<MDXRemoteSerializeResult<Record<string, unknown>, Record<string, unknown>>>()
   const router = useRouter()
   const id = router.query.id as string
 
