@@ -4,7 +4,9 @@ import { useState } from 'react';
 
 const AdaptiveCardsSampleWithNoSSR = dynamic(
   () => import('../components/adaptive-card'),
-  { ssr: false }
+  { 
+    ssr: false,
+  }
 );
 
 const IndexPage = () => {
