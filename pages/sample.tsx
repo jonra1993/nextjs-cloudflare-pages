@@ -10,13 +10,7 @@ const AdaptiveCardsSampleWithNoSSR = dynamic(
 );
 
 const IndexPage = () => {
-  const [isRendered, setIsRendered] = useState(false);
-  console.log({isRendered})
 
-  if (!isRendered) {
-    setIsRendered(true);
-    return null;    
-  }
   return (
     <main>
       <Head>
